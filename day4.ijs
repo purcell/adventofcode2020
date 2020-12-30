@@ -1,14 +1,11 @@
 input =: fread < 'input/4.txt'
 
-passports =. ((LF,LF) E. input,LF) <;._2 input,LF
-
-fields =. 3 : 0 " 1
-  (<;._2~  e.&(LF,': ')) y,' '
+pairs =. (<;._2~  e.&(':')) @,&':'
+fields =. (pairs;._2~  e.&(LF,' ')) @,&' '
+passports =. ((2#LF) E. input,LF) fields;._2 input,LF
+required =. 'byr'; 'iyr'; 'eyr'; 'hgt'; 'hcl'; 'ecl'; 'pid'
+ok1 =. 3 : 0 " 2
+  0 = # required -.|:{."1 y
 )
 
-ok1 =. 3 : 0 " 1
-  required =. 'byr'; 'iyr'; 'eyr'; 'hgt'; 'hcl'; 'ecl'; 'pid'
-  0=# required -. fields y
-)
-
-+/ ok1 > passports
++/ ok1 passports
